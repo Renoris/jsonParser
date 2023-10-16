@@ -1,0 +1,24 @@
+.normal-btn {
+    margin: 5px;
+}
+
+.bg-cfb {
+    background-color: cornflowerblue;
+}
+
+.hide {
+    display: none;
+}
+
+.open-hide{
+    font-weight: bold;
+}
+
+.bg-aquamarine {
+    background-color: aquamarine;
+}
+
+td {
+    border-width: 1px;
+    border-style: solid;
+}
