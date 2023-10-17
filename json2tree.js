@@ -1,5 +1,11 @@
 import {createClosableContainer} from "./closableContainerGenerator.js";
 
+function replaceKeyExpression(key, type) {
+    if (type === 'object') return `· {} ${key}`
+    else if (type === 'array') return `· [] ${key}`;
+    else return `· ${key}`;
+}
+
 
 function createSimpleClassDom (tagName, className) {
     const $dom = document.createElement(tagName);
@@ -9,11 +15,11 @@ function createSimpleClassDom (tagName, className) {
 
 function createNodeDom(key, object) {
     if (typeof object === 'object') {
-        if (Array.isArray(object))  return createClosableContainer(distributeProperty(object), `·[] ${key}`);
-        return createClosableContainer(distributeProperty(object), `· {} ${key}`);
+        if (Array.isArray(object)) return createClosableContainer(distributeProperty(object),  replaceKeyExpression(key, 'array'));
+        return createClosableContainer(distributeProperty(object), replaceKeyExpression(key, 'object'));
     }
 
-    return createDefaultDom(key, object);
+    return createDefaultDom(replaceKeyExpression(key, 'normal'), object);
 }
 
 function createDefaultDom(key, value) {
