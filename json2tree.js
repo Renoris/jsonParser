@@ -1,33 +1,59 @@
-function createObjectDom(object) {
+import {createClosableContainer} from "./closableContainerGenerator.js";
+
+
+function createSimpleClassDom (tagName, className) {
+    const $dom = document.createElement(tagName);
+    $dom.classList.add(className);
+    return $dom;
+}
+
+function createNodeDom(key, object) {
+    if (typeof object === 'object') {
+        if (Array.isArray(object))  return createClosableContainer(distributeProperty(object), `·[] ${key}`);
+        return createClosableContainer(distributeProperty(object), `· {} ${key}`);
+    }
+
+    return createDefaultDom(key, object);
+}
+
+function createDefaultDom(key, value) {
+    if (!value) return '';
+    if (!key) return '';
+    const $container = document.createElement('div');
+    const $keyDom = document.createElement('div');
+    $keyDom.innerHTML = `${key} :`;
+    const $valueDom = createSimpleClassDom('div', 'pdl-15');
+    $valueDom.innerHTML = value;
+
+    $container.appendChild($keyDom);
+    $container.appendChild($valueDom);
+    return $container;
+}
+
+function insertValue(parent, value) {
+    if (typeof value === 'object') parent.appendChild(value);
+    else parent.innerHTML = value;
+}
+
+function distributeProperty (object) {
     if (!object) return '';
 
-    const $table = document.createElement('table');
+    const $ul = createSimpleClassDom('ul', 'pdl-15');
 
     for (const property of Object.keys(object)) {
-        console.log(property);
-        createKeyValue2TrTd(property, object, $table);
+        const $li = createSimpleClassDom('li', 'content');
+        const $child = createNodeDom(property, object[property]);
+        insertValue($li, $child);
+        $ul.appendChild($li);
     }
 
-    return $table;
+    return $ul;
 }
 
-function createDefaultDom(value) {
-    if (!value) return;
-    if (typeof value === 'string') return value;
-    else return value.toString;
-}
 
-function shapeProvider(value) {
-    const type = typeof value;
-    if (type === 'object') {
-        return createObjectDom(value);
-    }
-
-    return createDefaultDom(value);
-}
 
 export function createTreeForm(json, $parent) {
-    const $tableForm = shapeProvider(json);
+    const $tableForm = distributeProperty(json);
     $parent.innerHTML = '';
-
+    insertValue($parent, $tableForm);
 }

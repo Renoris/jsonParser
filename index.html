@@ -9,14 +9,30 @@
     <link rel="stylesheet" href="index.css" >
 </head>
 <body>
-    <input type="file" id="file" name="file" style="display: none">
-    <div id="button-container">
-        <button class="normal-btn bg-cfb" type="button" id="file-add-btn">json</button>
-        <button class="normal-btn bg-aquamarine" type="button" id="json-parse-btn">parse</button>
-    </div>
-    <div id="json-container">
+    <header>
+        <div id="header-container">
+            <input type="file" id="file" name="file" style="display: none">
+            <div id="button-container">
+                <button class="normal-btn bg-cfb" type="button" id="file-add-btn">json</button>
+                <button class="normal-btn bg-rb" type="button" id="type-convert-btn">table</button>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section class="json-input">
+            <textarea id="json-text-area"></textarea>
+        </section>
+        <section>
+            <button class="parse-btn" type="button" id="json-parse-btn"></button>
+        </section>
+        <section>
+            <div id="json-container">
+                <div id="table-form"></div>
+                <div id="tree-form" class="hide"></div>
+            </div>
+        </section>
+    </main>
 
-    </div>
 </body>
 <script type="module" src="index.js"></script>
 </html>

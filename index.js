@@ -1,8 +1,18 @@
 import {createTableForm} from "./json2table.js";
+import {createTreeForm} from "./json2tree.js";
 
-function getJSONFileReader(onLoad) {
+function getJSONFileReader() {
     const reader = new FileReader();
-    reader.onload = onLoad;
+    reader.onload = function onLoadJSON (e) {
+        try {
+            const jsonContent = e.target.result;
+
+            const $textarea = document.getElementById('json-text-area');
+            $textarea.innerText = jsonContent.toString();
+        }catch (error) {
+            console.error("JSON 파싱 오류: " + error);
+        }
+    }
     reader.onerror = function (e) {
         console.log("파일로드 에러");
     }
@@ -15,36 +25,72 @@ function getJSONFileReader(onLoad) {
     return reader;
 }
 
-function onLoadJSON (e) {
-    try {
-        const jsonContent = e.target.result;
-        const result = JSON.parse(jsonContent);
-        const $jsonContainer = document.getElementById('json-container');
-        createTableForm(result, $jsonContainer);
+const jsonParseBtnClickEvent = () => {
+    const $textarea = document.getElementById("json-text-area");
+    const value = $textarea.value;
+    if (!value) return;
 
-    }catch (error) {
-        console.error("JSON 파싱 오류: " + error);
+    const result = JSON.parse(value);
+    const $tableForm = document.getElementById('table-form');
+    $tableForm.innerHTML = '';
+    createTableForm(result, $tableForm);
+
+    const $treeForm = document.getElementById('tree-form');
+    $treeForm.innerHTML = '';
+    createTreeForm(result, $treeForm);
+}
+
+function hideUnUsable (view) {
+    const $tableForm = document.getElementById('table-form');
+    const $treeForm = document.getElementById('tree-form');
+    if (view === 'table') {
+        $tableForm.classList.remove('hide');
+        $treeForm.classList.add('hide');
+    } else {
+        $treeForm.classList.remove('hide');
+        $tableForm.classList.add('hide');
     }
 }
 
-function initEventListener () {
-    const btn = document.getElementById("file-add-btn");
-    const fileInput = document.getElementById("file")
-    const jsonParseBtn = document.getElementById("json-parse-btn");
+function typeConvertBtnClickEventListener(e) {
+    let type = e.target.innerHTML;
+    if (type === 'table') type = 'tree';
+    else type = 'table';
 
-    const reader = getJSONFileReader(onLoadJSON)
+    hideUnUsable(type);
 
-    btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        fileInput.click();
-    })
+    e.target.innerHTML = type;
 
-    jsonParseBtn.addEventListener('click', () => {
-        const fileInput = document.getElementById("file");
-        const file = fileInput.files[0];
-        if (!file) return;
-        reader.readAsText(file);
-    })
 }
 
-initEventListener();
+function jsonInputBtnClickEventListener(e, fileInput) {
+    e.preventDefault();
+    fileInput.click();
+}
+
+function fileInputChangeEventListener(e, reader) {
+    const file = e.target.files[0];
+    if (!file) return;
+    reader.readAsText(file);
+}
+
+function initEventListener () {
+    const jsonBtn = document.getElementById("file-add-btn");
+    const fileInput = document.getElementById("file")
+    const jsonParseBtn = document.getElementById("json-parse-btn");
+    const typeConvertBtn = document.getElementById('type-convert-btn');
+    const reader = getJSONFileReader();
+
+    typeConvertBtn.addEventListener('click', (e) => typeConvertBtnClickEventListener(e));
+    jsonBtn.addEventListener('click', (e) => jsonInputBtnClickEventListener(e, fileInput));
+    fileInput.addEventListener('change', (e) => fileInputChangeEventListener(e, reader))
+    jsonParseBtn.addEventListener('click', jsonParseBtnClickEvent);
+}
+
+function init() {
+    initEventListener();
+
+}
+
+
+init();

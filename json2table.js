@@ -1,39 +1,14 @@
-
-
-function createKeyValue2TrTd(finder, jsonObject, $table) {
-    const $tr = document.createElement('tr');
-    const $key = document.createElement('td');
-    const $value = document.createElement('td');
-
-    $key.innerHTML = finder.toString();
-    insertValue($value, shapeProvider(jsonObject[finder]));
-
-    $tr.appendChild($key);
-    $tr.appendChild($value);
-    $table.appendChild($tr);
-}
+import {createClosableContainer} from "./closableContainerGenerator.js";
 
 function insertValue(parent, value) {
     if (typeof value === 'object') parent.appendChild(value);
     else parent.innerHTML = value;
 }
 
-function createOpenAndCloseContainer($dom) {
-    const $hideBtn = document.createElement('div');
-    $hideBtn.innerText = "펼치기/숨기기";
-    $hideBtn.classList.add('open-hide');
-    $hideBtn.addEventListener('click', () => {
-        $contentWrapper.classList.toggle('hide');
-    })
-
-    const $contentWrapper = document.createElement('div');
-    $contentWrapper.appendChild($dom);
-
-    const $container = document.createElement('div');
-    $container.appendChild($hideBtn);
-    $container.appendChild($contentWrapper);
-
-    return $container;
+function createSimpleClassDom (tagName, className) {
+    const $dom = document.createElement(tagName);
+    $dom.classList.add(className);
+    return $dom;
 }
 
 function createObjectDom(object) {
@@ -42,15 +17,23 @@ function createObjectDom(object) {
     const $table = document.createElement('table');
 
     for (const property of Object.keys(object)) {
-        console.log(property);
-        createKeyValue2TrTd(property, object, $table);
+        const $tr = document.createElement('tr');
+        const $key = createSimpleClassDom('td', 'content');
+        const $value = createSimpleClassDom('td', 'content');
+
+        $key.innerHTML = property.toString();
+        insertValue($value, shapeProvider(object[property]));
+
+        $tr.appendChild($key);
+        $tr.appendChild($value);
+        $table.appendChild($tr);
     }
 
     return $table;
 }
 
 function createDefaultDom(value) {
-    if (!value) return;
+    if (!value) return '';
     if (typeof value === 'string') return value;
     else return value.toString;
 }
@@ -58,8 +41,7 @@ function createDefaultDom(value) {
 function shapeProvider(value) {
     const type = typeof value;
     if (type === 'object') {
-        return Array.isArray(value) ? createOpenAndCloseContainer(createObjectDom(value)) : createObjectDom(value);
-
+        return Array.isArray(value) ? createClosableContainer(createObjectDom(value), "펼치기/숨기기") : createObjectDom(value);
     }
     return createDefaultDom(value);
 }
@@ -67,5 +49,5 @@ function shapeProvider(value) {
 export function createTableForm(json, $parent) {
     const $tableForm = shapeProvider(json);
     $parent.innerHTML = '';
-    insertValue($parent, $tableForm());
+    insertValue($parent, $tableForm);
 }
