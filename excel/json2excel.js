@@ -33,8 +33,15 @@ function setValueInExcel(value, columnIndex, ws) {
     }
 }
 
+function addTypeNameInProperty(key, value) {
+    if (typeof value === 'object') {
+        return Array.isArray(value) ? `${key} : []` : `${key} : {}`;
+    }
+    return key;
+}
+
 function createCell(startColumn, key, value, ws) {
-    setValueInExcel(key, startColumn, ws);
+    setValueInExcel(addTypeNameInProperty(key, value), startColumn, ws);
     if (typeof value === 'object') {
         propertyDivide(startColumn+1, value, ws);
     }
@@ -71,6 +78,8 @@ export function xlsxBtnClickEventListener() {
     const result = JSON.parse(value);
 
     const ws = convertObjectToWorkBook(result);
+
+    //없으면 빈 문서 나옴
     ws['!ref'] = `A1:${getColumn(getEndColumnIndex())}${getRow()}`
     XLSX.utils.book_append_sheet(wb, ws, "sheet1");
     XLSX.writeFile(wb, "jsonToExcel.xlsx");

@@ -1,6 +1,7 @@
 import {createTableForm} from "./dom/json2table.js";
 import {createTreeForm} from "./dom/json2tree.js";
 import {xlsxBtnClickEventListener} from "./excel/json2excel.js";
+import {parse} from "./parser/JsonParser.js";
 
 function getJSONFileReader() {
     const reader = new FileReader();
@@ -31,7 +32,7 @@ const jsonParseBtnClickEvent = () => {
     const value = $textarea.value;
     if (!value) return;
 
-    const result = JSON.parse(value);
+    const result = parse(value);
     const $tableForm = document.getElementById('table-form');
     $tableForm.innerHTML = '';
     createTableForm(result, $tableForm);
@@ -39,6 +40,7 @@ const jsonParseBtnClickEvent = () => {
     const $treeForm = document.getElementById('tree-form');
     $treeForm.innerHTML = '';
     createTreeForm(result, $treeForm);
+
 }
 
 function hideUnUsable (view) {
