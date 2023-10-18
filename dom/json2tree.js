@@ -1,11 +1,10 @@
-import {createClosableContainer} from "./closableContainerGenerator.js";
+import {createClosableContainer} from "../closableContainerGenerator.js";
 
 function replaceKeyExpression(key, type) {
     if (type === 'object') return `· {} ${key}`
     else if (type === 'array') return `· [] ${key}`;
     else return `· ${key}`;
 }
-
 
 function createSimpleClassDom (tagName, className) {
     const $dom = document.createElement(tagName);
@@ -55,8 +54,6 @@ function distributeProperty (object) {
 
     return $ul;
 }
-
-
 
 export function createTreeForm(json, $parent) {
     const $tableForm = distributeProperty(json);

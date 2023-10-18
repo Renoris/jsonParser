@@ -1,5 +1,6 @@
-import {createTableForm} from "./json2table.js";
-import {createTreeForm} from "./json2tree.js";
+import {createTableForm} from "./dom/json2table.js";
+import {createTreeForm} from "./dom/json2tree.js";
+import {xlsxBtnClickEventListener} from "./excel/json2excel.js";
 
 function getJSONFileReader() {
     const reader = new FileReader();
@@ -79,12 +80,14 @@ function initEventListener () {
     const fileInput = document.getElementById("file")
     const jsonParseBtn = document.getElementById("json-parse-btn");
     const typeConvertBtn = document.getElementById('type-convert-btn');
+    const excelDownloadBtn = document.getElementById('excel-download-btn');
     const reader = getJSONFileReader();
 
     typeConvertBtn.addEventListener('click', (e) => typeConvertBtnClickEventListener(e));
     jsonBtn.addEventListener('click', (e) => jsonInputBtnClickEventListener(e, fileInput));
     fileInput.addEventListener('change', (e) => fileInputChangeEventListener(e, reader))
     jsonParseBtn.addEventListener('click', jsonParseBtnClickEvent);
+    excelDownloadBtn.addEventListener('click', xlsxBtnClickEventListener);
 }
 
 function init() {
