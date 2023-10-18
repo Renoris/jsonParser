@@ -2,7 +2,7 @@ function getSpecialCharIndex(value) {
     if (value.slice(0,1) !== "{") {
         return null;
     }
-    const regex = /[\\,"\[\]{}:]/g;
+    const regex = getSpecialRegex();
 
     const specialCharIndexes = value
         .split('')
@@ -138,8 +138,8 @@ export function parse(value) {
     return createObject(value, specialCharIndexes);
 }
 
-function isSpecialRegex(value) {
-    return /[\\",\[\]{}:]/g;
+function getSpecialRegex() {
+    return /[\\,"\[\]{}:]/g;
 }
 
 function isColon(value) {
