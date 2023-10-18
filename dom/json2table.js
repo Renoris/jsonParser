@@ -1,4 +1,4 @@
-import {createClosableContainer} from "../closableContainerGenerator.js";
+import {createClosableContainer} from "../util/closableContainerGenerator.js";
 
 function insertValue(parent, value) {
     if (typeof value === 'object') parent.appendChild(value);

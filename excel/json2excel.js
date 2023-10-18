@@ -72,20 +72,6 @@ export function xlsxBtnClickEventListener() {
 
     const ws = convertObjectToWorkBook(result);
     ws['!ref'] = `A1:${getColumn(getEndColumnIndex())}${getRow()}`
-
-    var newWsData = [
-        ["Data", "Goes", "Here"],
-        [1, 2, 3],
-        ["More", "Data", "Here"]
-    ];
-
-    var newWs = XLSX.utils.aoa_to_sheet(newWsData);
-
-    console.log(newWs);
-
-    console.log(ws);
     XLSX.utils.book_append_sheet(wb, ws, "sheet1");
-    console.log(wb);
-    XLSX.writeFile(wb, "example.xlsx");
-    console.log('aaa')
+    XLSX.writeFile(wb, "jsonToExcel.xlsx");
 }

@@ -1,4 +1,4 @@
-import {createClosableContainer} from "../closableContainerGenerator.js";
+import {createClosableContainer} from "../util/closableContainerGenerator.js";
 
 function replaceKeyExpression(key, type) {
     if (type === 'object') return `· {} ${key}`
