@@ -11,6 +11,11 @@ function createSimpleClassDom (tagName, className) {
     return $dom;
 }
 
+function replaceKeyExpression(key, value) {
+    if (typeof value === 'object')return Array.isArray(value) ? `${key} : []` : `${key} : {}`;
+    return key;
+}
+
 function createObjectDom(object) {
     if (!object) return '';
 
@@ -18,10 +23,10 @@ function createObjectDom(object) {
 
     for (const property of Object.keys(object)) {
         const $tr = document.createElement('tr');
-        const $key = createSimpleClassDom('td', 'content');
+        const $key = createSimpleClassDom('td', 'property');
         const $value = createSimpleClassDom('td', 'content');
 
-        $key.innerHTML = property.toString();
+        $key.innerHTML = replaceKeyExpression(property, object[property]);
         insertValue($value, shapeProvider(object[property]));
 
         $tr.appendChild($key);

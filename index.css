@@ -56,6 +56,12 @@ textarea{
     vertical-align: middle;
 }
 
+.property{
+    font-size: 20px;
+    line-height: 35px;
+    white-space:nowrap;
+}
+
 .content {
     overflow: scroll;
     font-size: 20px;
