@@ -56,13 +56,13 @@ function hideUnUsable (view) {
 }
 
 function typeConvertBtnClickEventListener(e) {
-    let type = e.target.innerHTML;
+    let type = e.target.value;
     if (type === 'table') type = 'tree';
     else type = 'table';
 
     hideUnUsable(type);
 
-    e.target.innerHTML = type;
+    e.target.value = type;
 
 }
 

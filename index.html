@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -13,20 +13,18 @@
         <div id="header-container">
             <input type="file" id="file" name="file" style="display: none">
             <div id="button-container">
-                <button class="normal-btn bg-cfb" type="button" id="file-add-btn">json</button>
-                <button class="normal-btn bg-rb" type="button" id="type-convert-btn">table</button>
-                <button class="normal-btn bg-fw" type="button" id="excel-download-btn">excel</button>
+                <input type="button" class="normal-btn bg-aquamarine" id="file-add-btn" value="json"></input>
+                <input type="button" class="normal-btn bg-cfb" id="json-parse-btn" value="parse"></input>
+                <input type="button" class="normal-btn bg-rb" id="type-convert-btn" value="table"> </input>
+                <input type="button" class="normal-btn bg-fw" id="excel-download-btn" value="excel"></input>
             </div>
         </div>
     </header>
     <main>
-        <section class="json-input">
+        <section class="json-input-section">
             <textarea id="json-text-area"></textarea>
         </section>
-        <section>
-            <button class="parse-btn" type="button" id="json-parse-btn"></button>
-        </section>
-        <section>
+        <section class="json-result-section">
             <div id="json-container">
                 <div id="table-form"></div>
                 <div id="tree-form" class="hide"></div>

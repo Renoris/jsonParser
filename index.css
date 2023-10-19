@@ -6,52 +6,12 @@ blockquote, q {quotes:none}
 blockquote:after, blockquote:before, q:after, q:before {content:"";content:none}
 table {border-collapse:collapse;border-spacing:0}
 
-.normal-btn {
-    margin: 5px;
-    width: 60px;
-    height: 40px;
-}
 
-.pdl-15 {
-    padding-left: 15px;
-}
-
-.parse-btn {
-    margin-left: 20px;
-    background-color: transparent;
-    margin-top: 300px;
-    width: 0px;
-    height: 0px;
-    border-top: 60px solid transparent;
-    border-left: 120px solid skyblue;
-    border-bottom: 60px solid transparent;
-    border-right: 0 solid transparent;
-}
-
-.bg-cfb {
-    background-color: cornflowerblue;
-}
-
-.bg-rb{
-    background-color: rosybrown;
-}
-
-.hide {
-    display: none;
-}
-
-.open-hide{
-    font-weight: bold;
-}
-
-.bg-aquamarine {
-    background-color: aquamarine;
-}
-
-td {
-    border-width: 1px;
+header {
+    width: 100%;
+    border-width: 0 0 1px 0;
     border-style: solid;
-    padding:2px
+    border-color: rosybrown;
 }
 
 main {
@@ -70,9 +30,10 @@ section::-webkit-scrollbar {
     display: none;
 }
 
-
-head {
-    display: flex;
+td {
+    border-width: 1px;
+    border-style: solid;
+    padding:2px
 }
 
 textarea{
@@ -80,30 +41,86 @@ textarea{
     height: 100%;
     padding: 0;
     border-style: none;
+    font-size: 20px;
+    line-height: 25px;
 }
 
-header {
-    width: 100%;
-    border-width: 0 0 1px 0;
-    border-style: solid;
-    border-color: rosybrown;
+
+#header-container {
+    display: flex;
+    background-color: antiquewhite;
+}
+
+#button-container {
+    display: flex;
+    vertical-align: middle;
 }
 
 .content {
-    max-width: 700px;
     overflow: scroll;
+    font-size: 20px;
+    line-height: 35px;
+}
+
+table {
+    width: 100%;
 }
 
 .content::-webkit-scrollbar{
     display: none;
 }
 
-.json-input {
+.json-input-section {
     width: 35%;
 }
 
-#header-container {
-    background-color: antiquewhite;
+.json-result-section {
+    width: 65%;
+}
+
+.normal-btn {
+    flex: 1;
+    width: 100px;
+    height: 75px;
+    font-size: 25px;
+    margin: 10px 15px;
+}
+
+.parse-btn {
+    margin-left: 20px;
+    background-color: transparent;
+    margin-top: 300px;
+    width: 0px;
+    height: 0px;
+    border-top: 60px solid transparent;
+    border-left: 120px solid skyblue;
+    border-bottom: 60px solid transparent;
+    border-right: 0 solid transparent;
+}
+
+.hide {
+    display: none;
+}
+
+.open-hide{
+    font-weight: bold;
+}
+
+.pdl-15 {
+    padding-left: 15px;
+}
+
+
+.bg-cfb {
+    background-color: cornflowerblue;
+}
+
+.bg-rb{
+    background-color: rosybrown;
+}
+
+.bg-aquamarine {
+    background-color: aquamarine;
 }
 
 .bg-fw {
