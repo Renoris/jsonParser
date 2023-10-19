@@ -86,11 +86,7 @@ function createOutLastBorder(ws) {
         if (!cellS.s) cellS.s = {};
         cellS.s.border = { left: { style: "thin", color: { auto: 1 } }};
 
-        const cellAddressE = XLSX.utils.encode_cell({ r: r, c: range.e.c });
-        let cellE = ws[cellAddressE];
-        if (!cellE) cellE = {};
-        if (!cellE.s) cellE.s = {};
-        cellE.s.border = { right: { style: "thin", color: { auto: 1 } }};
+
     }
 }
 
@@ -100,8 +96,6 @@ export function xlsxBtnClickEventListener() {
     resetValue();
 
     //워크북 생성
-    const wb = XLSX.utils.book_new();
-
     const $textarea = document.getElementById("json-text-area");
     const value = $textarea.value;
     if (!value) return;
@@ -113,7 +107,8 @@ export function xlsxBtnClickEventListener() {
     //없으면 빈 문서 나옴
     ws['!ref'] = getXlsxRange();
     createOutLastBorder(ws);
-    console.log(ws);
+
+    const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "sheet1");
     XLSX.writeFile(wb, "jsonToExcel.xlsx");
 }
