@@ -1,7 +1,7 @@
 import {createTableForm} from "./dom/json2table.js";
 import {createTreeForm} from "./dom/json2tree.js";
 import {xlsxBtnClickEventListener} from "./excel/json2excel.js";
-import {parse} from "./parser/JsonParser.js";
+import {parse} from "./parser/json-parser.js";
 
 function getJSONFileReader() {
     const reader = new FileReader();

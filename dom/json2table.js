@@ -1,20 +1,7 @@
-import {createClosableContainer} from "../util/closableContainerGenerator.js";
-
-function insertValue(parent, value) {
-    if (typeof value === 'object') parent.appendChild(value);
-    else parent.innerHTML = value;
-}
-
-function createSimpleClassDom (tagName, className) {
-    const $dom = document.createElement(tagName);
-    $dom.classList.add(className);
-    return $dom;
-}
-
-function replaceKeyExpression(key, value) {
-    if (typeof value === 'object')return Array.isArray(value) ? `${key} : []` : `${key} : {}`;
-    return key;
-}
+import {createClosableContainer} from "../util/closable-container-generator.js";
+import {replaceKeyExpression} from "../util/key-name-replacer.js";
+import {insertValue} from "../util/dom-inserter.js";
+import {createSimpleClassDom} from "../util/dom-creator.js";
 
 function createObjectDom(object) {
     if (!object) return '';

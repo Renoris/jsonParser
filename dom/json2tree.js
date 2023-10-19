@@ -1,24 +1,15 @@
-import {createClosableContainer} from "../util/closableContainerGenerator.js";
-
-function replaceKeyExpression(key, type) {
-    if (type === 'object') return `· {} ${key}`
-    else if (type === 'array') return `· [] ${key}`;
-    else return `· ${key}`;
-}
-
-function createSimpleClassDom (tagName, className) {
-    const $dom = document.createElement(tagName);
-    $dom.classList.add(className);
-    return $dom;
-}
-
+import {createClosableContainer} from "../util/closable-container-generator.js";
+import {replaceKeyExpression} from "../util/key-name-replacer.js";
+import {insertValue} from "../util/dom-inserter.js";
+import {createSimpleClassDom} from "../util/dom-creator.js";
 function createNodeDom(key, object) {
+    const replacedKey = replaceKeyExpression(key, object);
+
     if (typeof object === 'object') {
-        if (Array.isArray(object)) return createClosableContainer(distributeProperty(object),  replaceKeyExpression(key, 'array'));
-        return createClosableContainer(distributeProperty(object), replaceKeyExpression(key, 'object'));
+        return createClosableContainer(distributeProperty(object), replacedKey);
     }
 
-    return createDefaultDom(replaceKeyExpression(key, 'normal'), object);
+    return createDefaultDom(replacedKey, object);
 }
 
 function createDefaultDom(key, value) {
@@ -33,11 +24,6 @@ function createDefaultDom(key, value) {
     $container.appendChild($keyDom);
     $container.appendChild($valueDom);
     return $container;
-}
-
-function insertValue(parent, value) {
-    if (typeof value === 'object') parent.appendChild(value);
-    else parent.innerHTML = value;
 }
 
 function distributeProperty (object) {
