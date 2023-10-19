@@ -17,7 +17,10 @@ function getEndColumnIndex () {
 }
 
 function setMaxCellValueLength(index, value) {
-    if (!_columnMaxMap.get(index) < value) {
+
+
+    if (!_columnMaxMap.get(index) || _columnMaxMap.get(index) < value) {
+        console.log(`set index : ${index} - value : ${value}`);
         _columnMaxMap.set(index, value);
     }
 }
@@ -44,12 +47,21 @@ function getColumnName(index) {
     return String.fromCodePoint(index+65);
 }
 
-function setValueInExcel(value, columnIndex, ws) {
+function setBottomIncludeCellDesign(cell) {
+    cell.border = {top: {style: 'thin'}, bottom:{style : 'thin'}}
+    cell.alignment = {wrapText: true, vertical: 'middle'};
+}
+
+function setDefaultCellDesign(cell) {
+    cell.border = {top: {style: 'thin'}}
+    cell.alignment = {wrapText: true, vertical: 'middle'};
+}
+
+function setValueInExcel(value, columnIndex, ws, setDesign) {
     const location = getCellLocation(columnIndex, getRow());
     const cell = ws.getCell(location);
     cell.value = value;
-    cell.border = {top: {style: 'thin'}}
-    cell.alignment = {wrapText: true, vertical: 'middle'};
+    setDesign(cell)
     setMaxCellValueLength(columnIndex, value.length);
 }
 
@@ -61,12 +73,12 @@ function addTypeNameInProperty(key, value) {
 }
 
 function createCell(startColumn, key, value, ws) {
-    setValueInExcel(addTypeNameInProperty(key, value), startColumn, ws);
+    setValueInExcel(addTypeNameInProperty(key, value), startColumn, ws, setDefaultCellDesign);
     if (typeof value === 'object') {
         propertyDivide(startColumn+1, value, ws);
     }
     else {
-        setValueInExcel(value, startColumn+1, ws);
+        setValueInExcel(value, startColumn+1, ws, setBottomIncludeCellDesign);
         addRow();
         refreshEndColumnIndex(startColumn+1);
     }
@@ -79,23 +91,26 @@ function propertyDivide (startColumn, object, ws) {
 }
 
 function setCellWidth(ws) {
-    for (let i = 0; i <= _endColumnIndex; i++) {
+    for (let i = 0; i <= getEndColumnIndex(); i++) {
         const columnName = getColumnName(i);
         const cellValueMaxLength = getMaxCellValueLength(i);
 
-        const column = ws.getColumn(columnName);
         let width = 5;
-        if (cellValueMaxLength > 4) {
-            width = 10;
-        }
-        if (cellValueMaxLength > 10) {
-            width = 70;
+        if (cellValueMaxLength > 128) {
+            width = 180;
+        } else if (cellValueMaxLength > 64) {
+            width = 128;
+        } else if (cellValueMaxLength > 32) {
+            width = 64;
+        } else if (cellValueMaxLength > 16) {
+            width = 32;
+        } else if (cellValueMaxLength > 8) {
+            width = 16;
+        } else if (cellValueMaxLength > 4) {
+            width = 8;
         }
 
-        if (cellValueMaxLength > 40) {
-            width = 200;
-        }
-
+        const column = ws.getColumn(columnName);
         column.width = width;
     }
 }
@@ -149,6 +164,7 @@ export function xlsxBtnClickEventListener() {
     setBorderOutLine(ws);
     console.log(ws);
     download(workbook);
+    console.log(_columnMaxMap);
 
 }
 function download(workbook) {
