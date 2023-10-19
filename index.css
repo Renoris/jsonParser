@@ -89,6 +89,15 @@ table {
     height: 75px;
     font-size: 25px;
     margin: 10px 15px;
+    border: outset;
+}
+
+.normal-btn:hover{
+    cursor: pointer;
+}
+
+.normal-btn:active {
+    transform: translateY(3px);
 }
 
 .parse-btn {
