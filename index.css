@@ -11,7 +11,7 @@ header {
     width: 100%;
     border-width: 0 0 1px 0;
     border-style: solid;
-    border-color: rosybrown;
+    border-color: lavender;
 }
 
 main {
@@ -20,9 +20,9 @@ main {
 
 section {
     height: 100vh;
-    border-width: 0 0 0 1px;
+    border-width: 0 0 0 2px;
     border-style: solid;
-    border-color: rosybrown;
+    border-color: lavender;
     overflow: scroll;
 }
 
@@ -48,7 +48,6 @@ textarea{
 
 #header-container {
     display: flex;
-    background-color: antiquewhite;
 }
 
 #button-container {
@@ -116,7 +115,13 @@ table {
     padding-left: 15px;
 }
 
+.bg-lv {
+    background-color: lavender;
+}
 
+.bg-aw {
+    background-color: antiquewhite;
+}
 .bg-cfb {
     background-color: cornflowerblue;
 }

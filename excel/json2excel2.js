@@ -17,10 +17,7 @@ function getEndColumnIndex () {
 }
 
 function setMaxCellValueLength(index, value) {
-
-
     if (!_columnMaxMap.get(index) || _columnMaxMap.get(index) < value) {
-        console.log(`set index : ${index} - value : ${value}`);
         _columnMaxMap.set(index, value);
     }
 }
@@ -167,9 +164,7 @@ export function xlsxBtnClickEventListener() {
     const ws = convertObjectToWorkSheet(result, workbook);
     setCellWidth(ws);
     setBorderOutLine(ws);
-    console.log(ws);
     download(workbook);
-    console.log(_columnMaxMap);
 
 }
 function download(workbook) {
