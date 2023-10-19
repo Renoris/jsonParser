@@ -24,7 +24,7 @@ function createObjectDom(object) {
     return $table;
 }
 
-function createDefaultDom(value) {
+function value2String(value) {
     if (!value) return '';
     if (typeof value === 'string') return value;
     else return value.toString;
@@ -35,7 +35,7 @@ function shapeProvider(value) {
     if (type === 'object') {
         return Array.isArray(value) ? createClosableContainer(createObjectDom(value), "펼치기/숨기기") : createObjectDom(value);
     }
-    return createDefaultDom(value);
+    return value2String(value);
 }
 
 export function createTableForm(json, $parent) {

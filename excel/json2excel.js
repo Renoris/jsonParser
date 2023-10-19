@@ -1,24 +1,31 @@
 
-let rowNum = 1;
-let endColumnIndex = 0;
+let _rowNum = 1;
+let _endColumnIndex = 0;
+
+function resetValue() {
+    _rowNum = 1;
+    _endColumnIndex = 0;
+}
 
 function getRow() {
-    return rowNum;
+    return _rowNum;
 }
 
 function addRow() {
-    rowNum++;
+    _rowNum++;
 }
 
 function getEndColumnIndex () {
-    return endColumnIndex;
+    return _endColumnIndex;
 }
 
 function refreshEndColumnIndex (value) {
-    if (endColumnIndex < value) endColumnIndex = value;
+    if (_endColumnIndex < value) _endColumnIndex = value;
 }
 
-
+function createDefaultCell(value) {
+    return { v: value , t:'s', s:{alignment: {wrapText:true}}};
+}
 function getColumn(index) {
     return String.fromCodePoint(index+65);
 }
@@ -27,7 +34,7 @@ function setValueInExcel(value, columnIndex, ws) {
     const location = `${getColumn(columnIndex)}${getRow()}`;
 
     if (!ws[location]) {
-        ws[location] = { v: value , t:'s'};
+        ws[location] = createDefaultCell(value);
     } else {
         ws[location].v = value;
     }
@@ -66,7 +73,31 @@ function convertObjectToWorkBook(object) {
     return ws;
 }
 
+function getXlsxRange() {
+    return `A1:${getColumn(getEndColumnIndex())}${getRow()}`;
+}
+
+function createOutLastBorder(ws) {
+    const range = XLSX.utils.decode_range(ws['!ref']);
+    for (let r = range.s.r; r <= range.e.r; r++) {
+        const cellAddressS = XLSX.utils.encode_cell({ r: r, c: range.s.c });
+        let cellS = ws[cellAddressS];
+        if (!cellS) cellS = {};
+        if (!cellS.s) cellS.s = {};
+        cellS.s.border = { left: { style: "thin", color: { auto: 1 } }};
+
+        const cellAddressE = XLSX.utils.encode_cell({ r: r, c: range.e.c });
+        let cellE = ws[cellAddressE];
+        if (!cellE) cellE = {};
+        if (!cellE.s) cellE.s = {};
+        cellE.s.border = { right: { style: "thin", color: { auto: 1 } }};
+    }
+}
+
+
 export function xlsxBtnClickEventListener() {
+
+    resetValue();
 
     //워크북 생성
     const wb = XLSX.utils.book_new();
@@ -80,7 +111,9 @@ export function xlsxBtnClickEventListener() {
     const ws = convertObjectToWorkBook(result);
 
     //없으면 빈 문서 나옴
-    ws['!ref'] = `A1:${getColumn(getEndColumnIndex())}${getRow()}`
+    ws['!ref'] = getXlsxRange();
+    createOutLastBorder(ws);
+    console.log(ws);
     XLSX.utils.book_append_sheet(wb, ws, "sheet1");
     XLSX.writeFile(wb, "jsonToExcel.xlsx");
 }
