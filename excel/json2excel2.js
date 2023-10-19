@@ -52,7 +52,7 @@ function setBottomIncludeCellDesign(cell) {
     cell.alignment = {wrapText: true, vertical: 'middle'};
 }
 
-function setDefaultCellDesign(cell) {
+function setBottomEmptyCellDesign(cell) {
     cell.border = {top: {style: 'thin'}}
     cell.alignment = {wrapText: true, vertical: 'middle'};
 }
@@ -73,11 +73,16 @@ function addTypeNameInProperty(key, value) {
 }
 
 function createCell(startColumn, key, value, ws) {
-    setValueInExcel(addTypeNameInProperty(key, value), startColumn, ws, setDefaultCellDesign);
     if (typeof value === 'object') {
+        if (Object.keys(value).length <= 1) {
+            setValueInExcel(addTypeNameInProperty(key, value), startColumn, ws, setBottomIncludeCellDesign);
+        }else {
+            setValueInExcel(addTypeNameInProperty(key, value), startColumn, ws, setBottomEmptyCellDesign);
+        }
         propertyDivide(startColumn+1, value, ws);
     }
     else {
+        setValueInExcel(addTypeNameInProperty(key, value), startColumn, ws, setBottomIncludeCellDesign);
         setValueInExcel(value, startColumn+1, ws, setBottomIncludeCellDesign);
         addRow();
         refreshEndColumnIndex(startColumn+1);
