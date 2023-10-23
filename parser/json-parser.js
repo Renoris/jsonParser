@@ -33,18 +33,25 @@ function createArray (value, specialCharIndexes) {
                 startValueIndex = index+1;
             }
             isValueRead = !isValueRead
+            continue;
         }
 
         if (isOpenCurlyBracket(alpha)) {
             array.push(createObject(value, specialCharIndexes));
+            continue;
         }
 
         if (isOpenSquareBracket(alpha)) {
             array.push(createArray(value, specialCharIndexes));
+            continue;
         }
 
         if (isCloseSquareBracket(alpha)) {
             return array;
+        }
+
+        if (isCloseCurlyBracket(alpha)) {
+            Error("json 형태가 아닙니다.");
         }
 
     }
@@ -84,6 +91,9 @@ function createObject(value, specialCharIndexes) {
                 isProperty = true;
                 continue;
             }
+            if (isCloseSquareBracket()) {
+                Error("json 형태가 아닙니다.");
+            }
         }
 
         if (isDoubleQuotes(alpha)) {
@@ -108,10 +118,7 @@ function createObject(value, specialCharIndexes) {
     return object;
 }
 
-
-
-
-function isJson(value) {
+function isValidOpenClose(value) {
     let array = [];
     for (const alpha of value) {
         if (isOpenCurlyBracket(alpha) || isOpenSquareBracket(alpha)) {
@@ -133,7 +140,7 @@ function isJson(value) {
  * @param value {string}
  */
 export function parse(value) {
-    if (!isJson(value)) Error("json 형태가 아닙니다");
+    if (!isValidOpenClose(value)) Error("json 형태가 아닙니다");
     const specialCharIndexes = getSpecialCharIndex(value);
     return createObject(value, specialCharIndexes);
 }

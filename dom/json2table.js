@@ -6,7 +6,7 @@ import {createSimpleClassDom} from "../util/dom-creator.js";
 function createObjectDom(object) {
     if (!object) return '';
 
-    const $table = document.createElement('table');
+    const $table = createSimpleClassDom('table', 'w-100');
 
     for (const property of Object.keys(object)) {
         const $tr = document.createElement('tr');
@@ -14,7 +14,7 @@ function createObjectDom(object) {
         const $value = createSimpleClassDom('td', 'content');
 
         $key.innerHTML = replaceKeyExpression(property, object[property]);
-        insertValue($value, shapeProvider(object[property]));
+        insertValue($value, distributeValueType(object[property]));
 
         $tr.appendChild($key);
         $tr.appendChild($value);
@@ -30,7 +30,7 @@ function value2String(value) {
     else return value.toString;
 }
 
-function shapeProvider(value) {
+function distributeValueType(value) {
     const type = typeof value;
     if (type === 'object') {
         return Array.isArray(value) ? createClosableContainer(createObjectDom(value), "펼치기/숨기기") : createObjectDom(value);
@@ -39,7 +39,7 @@ function shapeProvider(value) {
 }
 
 export function createTableForm(json, $parent) {
-    const $tableForm = shapeProvider(json);
+    const $tableForm = distributeValueType(json);
     $parent.innerHTML = '';
     insertValue($parent, $tableForm);
 }
