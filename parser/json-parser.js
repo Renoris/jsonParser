@@ -1,5 +1,5 @@
 function getSpecialCharIndex(value) {
-    if (value.slice(0,1) !== "{") {
+    if (value.slice(0, 1) !== "{") {
         return null;
     }
     const regex = getSpecialRegex();
@@ -17,7 +17,7 @@ function getSpecialCharIndex(value) {
     return specialCharIndexes;
 }
 
-function createArray (value, specialCharIndexes) {
+function createArray(value, specialCharIndexes) {
     let isValueRead = false;
     let startValueIndex = 0;
 
@@ -29,8 +29,8 @@ function createArray (value, specialCharIndexes) {
         if (isDoubleQuotes(alpha)) {
             if (isValueRead) {
                 array.push(value.slice(startValueIndex, index));
-            }else {
-                startValueIndex = index+1;
+            } else {
+                startValueIndex = index + 1;
             }
             isValueRead = !isValueRead
             continue;
@@ -67,7 +67,7 @@ function createObject(value, specialCharIndexes) {
     while (specialCharIndexes.length > 0) {
         const index = specialCharIndexes.shift();
         const alpha = value[index];
-        const frontAlpha = value[index-1];
+        const frontAlpha = value[index - 1];
 
         if (isBackSlash(frontAlpha)) continue;
 
@@ -100,14 +100,14 @@ function createObject(value, specialCharIndexes) {
             if (isProperty) {
                 if (isValueRead) {
                     propertyName = value.slice(startValueIndex, index);
-                }else {
-                    startValueIndex = index+1;
+                } else {
+                    startValueIndex = index + 1;
                 }
             } else {
                 if (isValueRead) {
                     object[propertyName] = value.slice(startValueIndex, index);
-                }else {
-                    startValueIndex = index+1;
+                } else {
+                    startValueIndex = index + 1;
                 }
             }
             isValueRead = !isValueRead

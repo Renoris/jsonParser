@@ -5,11 +5,11 @@ import {json2excelFile} from "./excel/json2excel.js";
 
 function getJSONFileReader($element) {
     const reader = new FileReader();
-    reader.onload = function onLoadJSON (e) {
+    reader.onload = function onLoadJSON(e) {
         try {
             const jsonContent = e.target.result;
             $element.value = jsonContent.toString();
-        }catch (error) {
+        } catch (error) {
             console.error("파일로드 에러: " + error);
         }
     }
@@ -17,10 +17,10 @@ function getJSONFileReader($element) {
         console.log("파일로드 에러");
     }
     reader.onabort = function (e) {
-        console.log ("파일 취소");
+        console.log("파일 취소");
     }
     reader.onprogress = function (e) {
-        console.log ("진행중");
+        console.log("진행중");
     }
     return reader;
 }
@@ -40,7 +40,7 @@ const jsonParseBtnClickEvent = () => {
     createTreeForm(result, $treeForm);
 }
 
-function hideUnUsable (view) {
+function hideUnUsable(view) {
     const $tableForm = document.getElementById('table-form');
     const $treeForm = document.getElementById('tree-form');
     if (view === 'table') {
@@ -73,7 +73,7 @@ function fileInputChangeEventListener(e, reader) {
     reader.readAsText(file);
 }
 
-function xlsxBtnClickEventListener () {
+function xlsxBtnClickEventListener() {
     const $textarea = document.getElementById("json-text-area");
     const value = $textarea.value;
     if (!value) return;
@@ -81,8 +81,7 @@ function xlsxBtnClickEventListener () {
     json2excelFile(json);
 }
 
-
-(function initEventListener () {
+(function initEventListener() {
     const $jsonBtn = document.getElementById("file-add-btn");
     const $fileInput = document.getElementById("file")
     const $jsonParseBtn = document.getElementById("json-parse-btn");
@@ -90,7 +89,6 @@ function xlsxBtnClickEventListener () {
     const $excelDownloadBtn = document.getElementById('excel-download-btn');
     const $textArea = document.getElementById('json-text-area');
     const reader = getJSONFileReader($textArea);
-
 
     $jsonBtn.addEventListener('click', (e) => jsonInputBtnClickEventListener(e, $fileInput));
     $fileInput.addEventListener('change', (e) => fileInputChangeEventListener(e, reader))

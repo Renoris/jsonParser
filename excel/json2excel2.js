@@ -1,4 +1,3 @@
-
 let _rowNum = 1;
 let _endColumnIndex = 0;
 
@@ -15,19 +14,20 @@ function addRow() {
     _rowNum++;
 }
 
-function getEndColumnIndex () {
+function getEndColumnIndex() {
     return _endColumnIndex;
 }
 
-function refreshEndColumnIndex (value) {
+function refreshEndColumnIndex(value) {
     if (_endColumnIndex < value) _endColumnIndex = value;
 }
 
 function createDefaultCell(value) {
-    return { v: value , t:'s', s:{alignment: {wrapText:true}}};
+    return {v: value, t: 's', s: {alignment: {wrapText: true}}};
 }
+
 function getColumn(index) {
-    return String.fromCodePoint(index+65);
+    return String.fromCodePoint(index + 65);
 }
 
 function setValueInExcel(value, columnIndex, ws) {
@@ -50,16 +50,15 @@ function addTypeNameInProperty(key, value) {
 function createCell(startColumn, key, value, ws) {
     setValueInExcel(addTypeNameInProperty(key, value), startColumn, ws);
     if (typeof value === 'object') {
-        propertyDivide(startColumn+1, value, ws);
-    }
-    else {
-        setValueInExcel(value, startColumn+1, ws);
+        propertyDivide(startColumn + 1, value, ws);
+    } else {
+        setValueInExcel(value, startColumn + 1, ws);
         addRow();
-        refreshEndColumnIndex(startColumn+1);
+        refreshEndColumnIndex(startColumn + 1);
     }
 }
 
-function propertyDivide (startColumn, object, ws) {
+function propertyDivide(startColumn, object, ws) {
     for (const property of Object.keys(object)) {
         createCell(startColumn, property, object[property], ws);
     }
@@ -80,11 +79,11 @@ function getXlsxRange() {
 function createOutLastBorder(ws) {
     const range = XLSX.utils.decode_range(ws['!ref']);
     for (let r = range.s.r; r <= range.e.r; r++) {
-        const cellAddressS = XLSX.utils.encode_cell({ r: r, c: range.s.c });
+        const cellAddressS = XLSX.utils.encode_cell({r: r, c: range.s.c});
         let cellS = ws[cellAddressS];
         if (!cellS) cellS = {};
         if (!cellS.s) cellS.s = {};
-        cellS.s.border = { left: { style: "thin", color: { auto: 1 } }};
+        cellS.s.border = {left: {style: "thin", color: {auto: 1}}};
 
 
     }

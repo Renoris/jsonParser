@@ -10,11 +10,11 @@ function resetValue() {
     _columnMaxMap = new Map();
 }
 
-function getEndColumnIndex () {
+function getEndColumnIndex() {
     return _endColumnIndex;
 }
 
-function setEndColumnIndex (value) {
+function setEndColumnIndex(value) {
     if (_endColumnIndex < value) _endColumnIndex = value;
 }
 
@@ -28,7 +28,7 @@ function addRow() {
 }
 
 function getColumnName(index) {
-    return String.fromCodePoint(index+65);
+    return String.fromCodePoint(index + 65);
 }
 
 function getMaxCellValueLength(columnIndex) {
@@ -48,7 +48,7 @@ function getCellLocation(columnIndex, row) {
 }
 
 function setBottomIncludeCellDesign(cell) {
-    cell.border = {top: {style: 'thin'}, bottom:{style : 'thin'}}
+    cell.border = {top: {style: 'thin'}, bottom: {style: 'thin'}}
     cell.alignment = {wrapText: true, vertical: 'middle'};
 }
 
@@ -71,20 +71,19 @@ function createCell(startColumn, key, value, ws) {
     if (typeof value === 'object') {
         if (Object.keys(value).length <= 1) {
             setValueInExcel(replacedKey, startColumn, ws, setBottomIncludeCellDesign);
-        }else {
+        } else {
             setValueInExcel(replacedKey, startColumn, ws, setBottomEmptyCellDesign);
         }
-        propertyDivide(startColumn+1, value, ws);
-    }
-    else {
+        propertyDivide(startColumn + 1, value, ws);
+    } else {
         setValueInExcel(replacedKey, startColumn, ws, setBottomIncludeCellDesign);
-        setValueInExcel(value, startColumn+1, ws, setBottomIncludeCellDesign);
+        setValueInExcel(value, startColumn + 1, ws, setBottomIncludeCellDesign);
         addRow();
-        setEndColumnIndex(startColumn+1);
+        setEndColumnIndex(startColumn + 1);
     }
 }
 
-function propertyDivide (startColumn, object, ws) {
+function propertyDivide(startColumn, object, ws) {
     for (const property of Object.keys(object)) {
         createCell(startColumn, property, object[property], ws);
     }
@@ -133,7 +132,7 @@ function setBorderOutLine(ws) {
         const maxCell = ws.getCell(endRLocation);
         if (!maxCell.border) maxCell.border = {};
 
-        maxCell.border.bottom= {style: 'medium'}
+        maxCell.border.bottom = {style: 'medium'}
     }
 
     for (let row = 1; row < getRow(); row++) {
@@ -160,8 +159,8 @@ export function json2excelFile(json) {
 }
 
 function download(workbook) {
-    workbook.xlsx.writeBuffer().then(function(data) {
-        const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    workbook.xlsx.writeBuffer().then(function (data) {
+        const blob = new Blob([data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;

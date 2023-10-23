@@ -2,6 +2,7 @@ import {createClosableContainer} from "../util/closable-container-generator.js";
 import {replaceKeyExpression} from "../util/key-name-replacer.js";
 import {insertValue} from "../util/dom-inserter.js";
 import {createSimpleClassDom} from "../util/dom-creator.js";
+
 function createChildDom(key, object) {
     const replacedKey = replaceKeyExpression(key, object);
 
@@ -26,7 +27,7 @@ function createValueDom(key, value) {
     return $container;
 }
 
-function distributeProperty (object) {
+function distributeProperty(object) {
     if (!object) return '';
 
     const $ul = createSimpleClassDom('ul', 'pdl-25');
