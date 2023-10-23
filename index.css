@@ -10,7 +10,7 @@ table {border-collapse:collapse;border-spacing:0}
 header {
     width: 100%;
     border-width: 0 0 1px 0;
-    border-style: solid;
+    border-style: ridge;
     border-color: lavender;
 }
 
@@ -45,6 +45,9 @@ textarea{
     line-height: 25px;
 }
 
+textarea::-webkit-scrollbar {
+    display: none;
+}
 
 #header-container {
     display: flex;
@@ -65,10 +68,6 @@ textarea{
     overflow: scroll;
     font-size: 20px;
     line-height: 35px;
-}
-
-table {
-    width: 100%;
 }
 
 .content::-webkit-scrollbar{
@@ -104,8 +103,8 @@ table {
     margin-left: 20px;
     background-color: transparent;
     margin-top: 300px;
-    width: 0px;
-    height: 0px;
+    width: 0;
+    height: 0;
     border-top: 60px solid transparent;
     border-left: 120px solid skyblue;
     border-bottom: 60px solid transparent;
@@ -120,8 +119,16 @@ table {
     font-weight: bold;
 }
 
+.w-100 {
+    width: 100%;
+}
+
 .pdl-15 {
     padding-left: 15px;
+}
+
+.pdl-25 {
+    padding-left: 25px;
 }
 
 .bg-lv {
