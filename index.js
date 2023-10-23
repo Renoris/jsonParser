@@ -1,18 +1,16 @@
 import {createTableForm} from "./dom/json2table.js";
 import {createTreeForm} from "./dom/json2tree.js";
-import {xlsxBtnClickEventListener} from "./excel/json2excel2.js";
 import {parse} from "./parser/json-parser.js";
+import {json2excelFile} from "./excel/json2excel.js";
 
-function getJSONFileReader() {
+function getJSONFileReader($element) {
     const reader = new FileReader();
     reader.onload = function onLoadJSON (e) {
         try {
             const jsonContent = e.target.result;
-
-            const $textarea = document.getElementById('json-text-area');
-            $textarea.innerText = jsonContent.toString();
+            $element.value = jsonContent.toString();
         }catch (error) {
-            console.error("JSON 파싱 오류: " + error);
+            console.error("파일로드 에러: " + error);
         }
     }
     reader.onerror = function (e) {
@@ -40,7 +38,6 @@ const jsonParseBtnClickEvent = () => {
     const $treeForm = document.getElementById('tree-form');
     $treeForm.innerHTML = '';
     createTreeForm(result, $treeForm);
-
 }
 
 function hideUnUsable (view) {
@@ -63,7 +60,6 @@ function typeConvertBtnClickEventListener(e) {
     hideUnUsable(type);
 
     e.target.value = type;
-
 }
 
 function jsonInputBtnClickEventListener(e, fileInput) {
@@ -77,25 +73,28 @@ function fileInputChangeEventListener(e, reader) {
     reader.readAsText(file);
 }
 
-function initEventListener () {
-    const jsonBtn = document.getElementById("file-add-btn");
-    const fileInput = document.getElementById("file")
-    const jsonParseBtn = document.getElementById("json-parse-btn");
-    const typeConvertBtn = document.getElementById('type-convert-btn');
-    const excelDownloadBtn = document.getElementById('excel-download-btn');
-    const reader = getJSONFileReader();
-
-    typeConvertBtn.addEventListener('click', (e) => typeConvertBtnClickEventListener(e));
-    jsonBtn.addEventListener('click', (e) => jsonInputBtnClickEventListener(e, fileInput));
-    fileInput.addEventListener('change', (e) => fileInputChangeEventListener(e, reader))
-    jsonParseBtn.addEventListener('click', jsonParseBtnClickEvent);
-    excelDownloadBtn.addEventListener('click', xlsxBtnClickEventListener);
-}
-
-function init() {
-    initEventListener();
-
+function xlsxBtnClickEventListener () {
+    const $textarea = document.getElementById("json-text-area");
+    const value = $textarea.value;
+    if (!value) return;
+    const json = parse(value);
+    json2excelFile(json);
 }
 
 
-init();
+(function initEventListener () {
+    const $jsonBtn = document.getElementById("file-add-btn");
+    const $fileInput = document.getElementById("file")
+    const $jsonParseBtn = document.getElementById("json-parse-btn");
+    const $typeConvertBtn = document.getElementById('type-convert-btn');
+    const $excelDownloadBtn = document.getElementById('excel-download-btn');
+    const $textArea = document.getElementById('json-text-area');
+    const reader = getJSONFileReader($textArea);
+
+
+    $jsonBtn.addEventListener('click', (e) => jsonInputBtnClickEventListener(e, $fileInput));
+    $fileInput.addEventListener('change', (e) => fileInputChangeEventListener(e, reader))
+    $jsonParseBtn.addEventListener('click', jsonParseBtnClickEvent);
+    $typeConvertBtn.addEventListener('click', (e) => typeConvertBtnClickEventListener(e));
+    $excelDownloadBtn.addEventListener('click', xlsxBtnClickEventListener);
+})();
