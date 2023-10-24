@@ -18,7 +18,7 @@ function createValueDom(key, value) {
     if (!key) return '';
     const $container = document.createElement('div');
     const $keyDom = document.createElement('div');
-    $keyDom.innerHTML = `${key} :`;
+    $keyDom.innerHTML = key;
     const $valueDom = createSimpleClassDom('div', 'pdl-25');
     $valueDom.innerHTML = value;
 
