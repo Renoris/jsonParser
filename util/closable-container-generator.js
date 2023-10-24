@@ -1,7 +1,7 @@
 export function createClosableContainer($dom, text) {
     const $hideBtn = document.createElement('div');
     $hideBtn.innerText = text;
-    $hideBtn.classList.add('open-hide');
+    $hideBtn.classList.add('font-bold');
     $hideBtn.addEventListener('click', () => {
         $contentWrapper.classList.toggle('hide');
     })
