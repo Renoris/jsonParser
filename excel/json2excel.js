@@ -1,46 +1,62 @@
 import {replaceKeyExpression} from "../util/key-name-replacer.js";
 
-let _rowNum = 1;
-let _endColumnIndex = 0;
-let _columnMaxMap = new Map();
+function getStateFunctions () {
 
-function resetValue() {
-    _rowNum = 1;
-    _endColumnIndex = 0;
-    _columnMaxMap = new Map();
+    let _rowNum = 1;
+    let _endColumnIndex = 0;
+    let _columnMaxLengthMap = new Map();
+
+    function resetValue() {
+        _rowNum = 1;
+        _endColumnIndex = 0;
+        _columnMaxLengthMap = new Map();
+    }
+
+    function getEndColumnIndex() {
+        return _endColumnIndex;
+    }
+
+    function setEndColumnIndex(value) {
+        if (_endColumnIndex < value) _endColumnIndex = value;
+    }
+
+
+    function getRow() {
+        return _rowNum;
+    }
+
+    function addRow() {
+        _rowNum++;
+    }
+
+    function getMaxCellValueLength(columnIndex) {
+        if (!_columnMaxLengthMap.get(columnIndex)) _columnMaxLengthMap.set(columnIndex, 0);
+        return _columnMaxLengthMap.get(columnIndex);
+    }
+
+
+    function setMaxCellValueLength(columnIndex, value) {
+        if (!_columnMaxLengthMap.get(columnIndex) || _columnMaxLengthMap.get(columnIndex) < value) {
+            _columnMaxLengthMap.set(columnIndex, value);
+        }
+    }
+
+    return {
+        resetValue,
+        getEndColumnIndex,
+        setEndColumnIndex,
+        getRow,
+        addRow,
+        getMaxCellValueLength,
+        setMaxCellValueLength
+    }
 }
 
-function getEndColumnIndex() {
-    return _endColumnIndex;
-}
-
-function setEndColumnIndex(value) {
-    if (_endColumnIndex < value) _endColumnIndex = value;
-}
-
-
-function getRow() {
-    return _rowNum;
-}
-
-function addRow() {
-    _rowNum++;
-}
+const {resetValue, getEndColumnIndex, setEndColumnIndex, getRow,
+    addRow, getMaxCellValueLength, setMaxCellValueLength} = getStateFunctions();
 
 function getColumnName(index) {
     return String.fromCodePoint(index + 65);
-}
-
-function getMaxCellValueLength(columnIndex) {
-    if (!_columnMaxMap.get(columnIndex)) _columnMaxMap.set(columnIndex, 0);
-    return _columnMaxMap.get(columnIndex);
-}
-
-
-function setMaxCellValueLength(columnIndex, value) {
-    if (!_columnMaxMap.get(columnIndex) || _columnMaxMap.get(columnIndex) < value) {
-        _columnMaxMap.set(columnIndex, value);
-    }
 }
 
 function getCellLocation(columnIndex, row) {
