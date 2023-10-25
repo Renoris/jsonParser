@@ -89,14 +89,15 @@ textarea::-webkit-scrollbar {
     font-size: 25px;
     margin: 10px 15px;
     border: outset;
+    border-radius: 0.5rem;
 }
 
-.normal-btn:hover{
+.clickable:hover{
     cursor: pointer;
 }
 
-.normal-btn:active {
-    transform: translateY(3px);
+.clickable:active {
+    transform: translateY(1px);
 }
 
 .parse-btn {
