@@ -1,25 +1,11 @@
 import {replaceKeyExpression} from "../util/key-name-replacer.js";
 
-function getStateFunctions () {
-
+function getRowNumStateFunctions() {
     let _rowNum = 1;
-    let _endColumnIndex = 0;
-    let _columnMaxLengthMap = new Map();
 
-    function resetValue() {
+    function resetRow () {
         _rowNum = 1;
-        _endColumnIndex = 0;
-        _columnMaxLengthMap = new Map();
     }
-
-    function getEndColumnIndex() {
-        return _endColumnIndex;
-    }
-
-    function setEndColumnIndex(value) {
-        if (_endColumnIndex < value) _endColumnIndex = value;
-    }
-
 
     function getRow() {
         return _rowNum;
@@ -27,6 +13,20 @@ function getStateFunctions () {
 
     function addRow() {
         _rowNum++;
+    }
+
+    return {
+        resetRow,
+        getRow,
+        addRow
+    }
+}
+
+function getColumnMaxLengthStateFunctions() {
+    let _columnMaxLengthMap = new Map();
+
+    function resetMap() {
+        _columnMaxLengthMap = new Map();
     }
 
     function getMaxCellValueLength(columnIndex) {
@@ -42,18 +42,44 @@ function getStateFunctions () {
     }
 
     return {
-        resetValue,
-        getEndColumnIndex,
-        setEndColumnIndex,
-        getRow,
-        addRow,
+        resetMap,
         getMaxCellValueLength,
         setMaxCellValueLength
     }
+
 }
 
-const {resetValue, getEndColumnIndex, setEndColumnIndex, getRow,
-    addRow, getMaxCellValueLength, setMaxCellValueLength} = getStateFunctions();
+function getEndColumnIndexStateFunctions () {
+
+    let _endColumnIndex = 0;
+
+    function resetEndColumn() {
+        _endColumnIndex = 0;
+    }
+
+    function getEndColumnIndex() {
+        return _endColumnIndex;
+    }
+
+    function setEndColumnIndex(value) {
+        if (_endColumnIndex < value) _endColumnIndex = value;
+    }
+    return {
+        resetEndColumn,
+        getEndColumnIndex,
+        setEndColumnIndex,
+    }
+}
+
+const {resetMap, getMaxCellValueLength, setMaxCellValueLength} = getColumnMaxLengthStateFunctions();
+const {resetEndColumn, getEndColumnIndex, setEndColumnIndex} = getEndColumnIndexStateFunctions();
+const {resetRow, getRow, addRow} = getRowNumStateFunctions();
+
+function resetValue() {
+    resetRow();
+    resetMap();
+    resetEndColumn();
+}
 
 function getColumnName(index) {
     return String.fromCodePoint(index + 65);
@@ -110,20 +136,8 @@ function setCellWidth(ws) {
         const columnName = getColumnName(i);
         const cellValueMaxLength = getMaxCellValueLength(i);
 
-        let width = 5;
-        if (cellValueMaxLength > 128) {
-            width = 180;
-        } else if (cellValueMaxLength > 64) {
-            width = 128;
-        } else if (cellValueMaxLength > 32) {
-            width = 64;
-        } else if (cellValueMaxLength > 16) {
-            width = 32;
-        } else if (cellValueMaxLength > 8) {
-            width = 16;
-        } else if (cellValueMaxLength > 4) {
-            width = 8;
-        }
+        let width = cellValueMaxLength / 2 > 20 ? cellValueMaxLength / 2 : 20;
+        width = Math.min (width, 180);
 
         const column = ws.getColumn(columnName);
         column.width = width;
